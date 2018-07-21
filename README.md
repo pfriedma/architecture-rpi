@@ -1,5 +1,6 @@
-# architecture
-This is the core architecture repository
+# Raspberry Pi Cluster 
+This repo describes an architecture for a clustered container platform
+using Raspberry Pis. It is very much a work in progress. 
 
 ## rpi_cluster
 Contains artifacts for Raspberry Pi Docker clustering project
