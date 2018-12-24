@@ -1,0 +1,56 @@
+{
+  "clusters": [
+    {
+      "nodes": [
+        {
+          "node": {
+            "hostnames": {
+              "manage": [
+                "raspberrypi-node0"
+              ],
+              "storage": [
+                "192.168.10.1"
+              ]
+            },
+            "zone": 1
+          },
+          "devices": [
+            "/dev/loop0"
+          ]
+        },
+        {
+          "node": {
+            "hostnames": {
+              "manage": [
+                "raspberrypi-node1"
+              ],
+              "storage": [
+                "192.168.10.2"
+              ]
+            },
+            "zone": 1
+          },
+          "devices": [
+            "/dev/loop0"
+          ]
+        },
+        {
+          "node": {
+            "hostnames": {
+              "manage": [
+                "raspberrypi-node2"
+              ],
+              "storage": [
+                "192.168.10.3"
+              ]
+            },
+            "zone": 1
+          },
+          "devices": [
+            "/dev/loop0"
+          ]
+        }
+      ]
+    }
+  ]
+}
