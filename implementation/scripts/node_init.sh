@@ -1,6 +1,6 @@
 #!/bin/bash
 # Initialize cluster nodes...
-# Set your master api ip and port..."
+# Set your join command
 JOIN_CMD="the kubeadm join command printed out by kubeadm init"
 
 echo "iptables bridge..."
