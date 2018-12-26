@@ -19,7 +19,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: redis-pv-claim
   annotations:
-   volume.beta.kubernetes.io/storage-class: glusterfs-storage
+   volume.beta.kubernetes.io/storage-class: glusterfs-storage-replicated
   labels:
     app: redis
 spec:
@@ -27,7 +27,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 500M
 ---
 apiVersion: apps/v1
 kind: Deployment

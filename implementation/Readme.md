@@ -1,5 +1,5 @@
 # Architecture Reference Implementation
-This is a reference implementation of the architecture built on Raspberry PI 3s, using raspbain, Kubernetes, Flannel networking and Heketi/Gluster hyperconverged storage (Heketi / Alpine, Geluster-Storage Fedora)
+This is a reference implementation of the architecture built on Raspberry PI 3s, using raspbain, Kubernetes, WeaveNet networking and Heketi/Gluster hyperconverged storage (Heketi / Alpine, Geluster-Storage Fedora)
 
 Thanks to the amazing work done by Hypriot, and [Deploying a RPI cloud](https://kubecloud.io/setting-up-a-kubernetes-1-11-raspberry-pi-cluster-using-kubeadm-952bbda329c8)
 
@@ -7,6 +7,14 @@ I wanted to explore the idea (and limitations of) distributed, mesh, hyperconver
 
 ## A note about environments
 I did this all on a mac, so you may need to slightly modify the scripts and paths (e.g. `/Volues/boot`)
+
+## A note on Swap
+After building the first time, I noticed the nodes were perpetually experienceing high iowait. Turns out on the limited resources of the PI, if you're going to start with a "default-distribution" like raspbain, you really want swap even though Kubernetes doesn't like it. Certain operations, like mirroring the gluster volumes, really benefit from some additional swap.
+
+There is a version of the initial setup `scripts/initial_setup_wswap.sh` which DOESN'T turn off swap. 
+
+After you run it, you need to edit the kubelet systemd script in `/etc/systemd` and append `--fail-swap-on=false` to the kubelet arguments on all nodes. 
+
 
 ## Overview
 We'll rely on the fact that raspbian comes up initially with the fixed hostname 'raspberrypi' and we'll do the following:
@@ -17,7 +25,7 @@ We'll rely on the fact that raspbian comes up initially with the fixed hostname 
      * Configure Timezone
      * Expand filesystem
 1. Install kubernetes
-1. Install Flannel
+1. Install WeaveNet
 1. Bring up the other nodes
 1. Build and Install Heketi and Gluster images
 1. Deploy Heketi and Gluster
@@ -247,7 +255,14 @@ You'll need to describe your node topology
 
 This file is a litle wierd because it has names and IPs, you need both.
 
-check `src/topology.json` for an example.
+check `src/topology.json` for an example. Please make sure the data volumes are blank, or else Heketi will complain. You can adjust the node configuration in the topology file to tell Heketi to wipe volumes like so:
+
+~~~~
+          "devices": [
+       		  {"name":"/dev/loop0",
+		         "destroydata": true}
+          ]
+~~~~
 
 Next, you're ready to deploy!
 
