@@ -284,7 +284,15 @@ $ /gk-deploy -g --no-object -n kube-storage
 This will take some time, but if all goes well, you should now see your storage cluster up!
 
 ### Create a storage class
-The output shold show your api endpoint, go ahead and apply a storage class using it e.g. 
+The output shold show your api endpoint, but it's for the node. Check the service cluster IP first with kubectl:
+~~~~
+$ kubectl get svc heketi -n kube-storage
+NAME      TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+heketi    ClusterIP   10.99.11.218   <none>        8080/TCP   2d
+~~~~
+
+Then, create a storage endpoing using it:
+
 ~~~~
 apiVersion: storage.k8s.io/v1beta1
 kind: StorageClass
@@ -292,7 +300,7 @@ metadata:
   name: glusterfs-storage
 provisioner: kubernetes.io/glusterfs
 parameters:
-  resturl: "http://10.36.0.2:8080"
+  resturl: "http://10.99.11.218"
 ~~~~
 
 ## Trying it all out...
